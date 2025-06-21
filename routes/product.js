@@ -1,6 +1,7 @@
 
 const express = require('express')
-const Product = require('../models/Product')
+const Product = require('../models/Product')// load the database/schema of products
+const Review = require('../models/Review')
 const router = express.Router()// mini instance
 
 // to show all the products
@@ -24,7 +25,7 @@ router.post('/products',async(req,res)=>{
 // to show a particular product
 router.get('/products/:id',async(req,res)=>{
     let {id} = req.params
-    let foundProduct = await Product.findById(id)
+    let foundProduct = await Product.findById(id).populate('reviews') // populate with reviews when we are showing a particular product
     res.render('products/show',{foundProduct})
 })
 
@@ -39,14 +40,21 @@ router.get('/products/:id/edit',async(req,res)=>{
 router.patch('/products/:id',async(req,res)=>{
     let {id} = req.params
     let {name,img,price,description} = req.body;
-    let foundProduct = await Product.findByIdAndUpdate(id, {name,img,price,description})
+    await Product.findByIdAndUpdate(id, {name,img,price,description})
     res.redirect(`/products/${id}`)
 })
 
-// to delete a product
+// to delete a product with reviews
 router.delete('/products/:id',async(req,res)=>{
     let {id} = req.params
-    let foundProduct = await Product.findByIdAndDelete(id)
+    const product = await Product.findById(id)
+
+    // to delete the reviews of a particular product
+    // for (let id of product.reviews) {
+    //   await Review.findByIdAndDelete(id)
+    // }
+
+    await Product.findByIdAndDelete(id)
     res.redirect(`/products`)
 })
 
