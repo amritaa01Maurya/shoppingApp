@@ -2,8 +2,10 @@ const express = require('express');
 const Product = require('../models/Product');
 const Review = require('../models/Review');
 const router = express.Router()
+const {validateReview} = require('../middleware')
 
-router.post('/products/:id/review',async(req,res)=>{
+
+router.post('/products/:id/review',validateReview,async(req,res)=>{
     let {id}=req.params;
     let {rating,comment}=req.body;
     const product = await Product.findById(id)
