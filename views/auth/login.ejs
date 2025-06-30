@@ -1,0 +1,38 @@
+<% layout('layouts/boilerplate') %>
+
+<%- include('../partials/navbar') %>
+
+<div class = "row">
+    <div class="col-md-6 mx-auto">
+        <%- include('../partials/flash') %>
+        <h1 class="display-6">Login</h1>
+        <form action="/login" method="POST">
+            
+            <div class="mb-3">
+                    <label class="form-label" for="username">Username:</label>
+                    <!-- name must be same as the schema  -->
+                    <input type="text" class="form-control" name="username" id="username" placeholder="Username" > 
+            </div>
+            <!-- we dont need email only using username and password -->
+            <!-- <div class="mb-3">
+                    <label class="form-label" for="email">Email:</label>
+                    <input type="email" class="form-control" name="email" id="email" placeholder="Email" > 
+            </div> -->
+            <div class="mb-3">
+                    <label class="form-label" for="password">Password:</label>
+                    <!-- name must be same as the schema  -->
+                    <input type="password" class="form-control" name="password" id="password" placeholder="Password" > 
+            </div>
+            <button type="submit" class="btn btn-sm btn-success">Login</button>
+            <p class="fw-light mt-2">Don't have an account, <a href="/register">Sign Up</a></p>
+
+    </form>
+
+    </div>
+    
+</div>
+
+</body>
+</html>
+
+

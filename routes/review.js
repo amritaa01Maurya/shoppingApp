@@ -3,7 +3,7 @@ const router = express.Router()
 const Product = require('../models/Product');
 const Review = require('../models/Review');
 const {validateReview} = require('../middleware')
-// my this line of code is giving error
+// my this line of code is giving error: now i have fixed it
 
 router.post('/products/:id/review',validateReview,async(req,res)=>{
     let {id}=req.params;

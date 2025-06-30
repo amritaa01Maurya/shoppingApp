@@ -3,11 +3,11 @@ const express = require('express')
 const Product = require('../models/Product')// load the database/schema of products
 const Review = require('../models/Review')
 const router = express.Router()// mini instance
-const {validateProduct} = require('../middleware')
+const {validateProduct, isLoggedIn} = require('../middleware')
 
 
 // to show all the products
-router.get('/products',async(req,res)=>{
+router.get('/products', async(req,res)=>{
     try{
         let products = await Product.find({})
         res.render('products/index',{products})
@@ -19,7 +19,7 @@ router.get('/products',async(req,res)=>{
 })
 
 // to show the form of the new products
-router.get('/product/new',(req,res)=>{
+router.get('/product/new',isLoggedIn, (req,res)=>{
     try{
         res.render('products/new')
     }
@@ -29,7 +29,7 @@ router.get('/product/new',(req,res)=>{
 })
 
 //to actually add the products  after validpro   it goes to it
-router.post('/products', validateProduct, async(req,res)=>{
+router.post('/products', validateProduct, isLoggedIn, async(req,res)=>{
     try{
         let {name,img,price,description} = req.body;
         await Product.create({name,img,price,description})
@@ -42,7 +42,7 @@ router.post('/products', validateProduct, async(req,res)=>{
 })
 
 // to show a particular product
-router.get('/products/:id',async(req,res)=>{
+router.get('/products/:id', async(req,res)=>{
     try{
         let {id} = req.params
         let foundProduct = await Product.findById(id).populate('reviews') // populate with reviews when we are showing a particular product
@@ -54,7 +54,7 @@ router.get('/products/:id',async(req,res)=>{
 })
 
 // form to edit the product data
-router.get('/products/:id/edit',async(req,res)=>{
+router.get('/products/:id/edit', isLoggedIn, async(req,res)=>{
     try{
 
         let {id} = req.params
@@ -67,7 +67,7 @@ router.get('/products/:id/edit',async(req,res)=>{
 })
 
 // to actually edit the data in db
-router.patch('/products/:id',validateProduct,async(req,res)=>{
+router.patch('/products/:id',validateProduct, isLoggedIn, async(req,res)=>{
     try{
         let {id} = req.params
         let {name,img,price,description} = req.body;
@@ -81,7 +81,7 @@ router.patch('/products/:id',validateProduct,async(req,res)=>{
 })
 
 // to delete a product with reviews
-router.delete('/products/:id',async(req,res)=>{
+router.delete('/products/:id', isLoggedIn, async(req,res)=>{
     try{
         let {id} = req.params
         const product = await Product.findById(id)
