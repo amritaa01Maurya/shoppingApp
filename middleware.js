@@ -12,11 +12,11 @@ const validateProduct = (req,res,next)=>{
 
 const validateReview = (req,res,next)=>{
     const {rating, comment}= req.body
-    const {error} = productSchema.validate({rating, comment})
+    const {error} = reviewSchema.validate({rating, comment})
     if(error){
         return res.render('error')
     }
     next()
 }
 
-module.exports = {validateProduct, validateReview}
+module.exports = {validateReview, validateProduct}

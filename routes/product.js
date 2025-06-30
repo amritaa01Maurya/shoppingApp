@@ -33,6 +33,7 @@ router.post('/products', validateProduct, async(req,res)=>{
     try{
         let {name,img,price,description} = req.body;
         await Product.create({name,img,price,description})
+        req.flash('success','Product added successfully')
         res.redirect('/products')
     }
     catch(e){
@@ -45,7 +46,7 @@ router.get('/products/:id',async(req,res)=>{
     try{
         let {id} = req.params
         let foundProduct = await Product.findById(id).populate('reviews') // populate with reviews when we are showing a particular product
-        res.render('products/show',{foundProduct})
+        res.render('products/show',{foundProduct, msg:req.flash('msg')}) //now go to show page 
     }
     catch(e){
         res.status(404).render('error',{err: e.message})
@@ -71,6 +72,7 @@ router.patch('/products/:id',validateProduct,async(req,res)=>{
         let {id} = req.params
         let {name,img,price,description} = req.body;
         await Product.findByIdAndUpdate(id, {name,img,price,description})
+        req.flash('success','Product edited successfully')
         res.redirect(`/products/${id}`)
     }
     catch(e){
@@ -90,6 +92,7 @@ router.delete('/products/:id',async(req,res)=>{
     // }
 
         await Product.findByIdAndDelete(id)
+        req.flash('success','Product deleted successfully')
         res.redirect(`/products`)
     }
     catch(e){
