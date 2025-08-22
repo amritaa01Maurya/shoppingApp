@@ -11,8 +11,8 @@ router.get('/register', (req,res)=>{
 // actually want to register a user in my db
 router.post('/register',async(req,res)=>{
     try{
-    let {email, password, username} =  req.body
-    const user = new User({email, username})
+    let {email, password, username, role} =  req.body
+    const user = new User({email, username, role})
     const newUser = await User.register(user, password)
     // res.send(newUser)
     // res.redirect('/login')
@@ -20,7 +20,7 @@ router.post('/register',async(req,res)=>{
         if(err){
             return next(err)
         }
-        req.flash('success','welcome, you are registered successfully')
+        req.flash('success','Welcome, you are registered successfully')
         return res.redirect('/products')
         })
     }

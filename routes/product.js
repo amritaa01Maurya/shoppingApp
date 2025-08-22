@@ -3,7 +3,7 @@ const express = require('express')
 const Product = require('../models/Product')// load the database/schema of products
 const Review = require('../models/Review')
 const router = express.Router()// mini instance
-const {validateProduct, isLoggedIn} = require('../middleware')
+const {validateProduct, isLoggedIn, isSeller, isProductAuthor} = require('../middleware')
 
 
 // to show all the products
@@ -28,11 +28,11 @@ router.get('/product/new',isLoggedIn, (req,res)=>{
     }
 })
 
-//to actually add the products  after validpro   it goes to it
-router.post('/products', validateProduct, isLoggedIn, async(req,res)=>{
+//to actually add the products  after valid pro   it goes to it
+router.post('/products', validateProduct, isLoggedIn, isSeller, async(req,res)=>{
     try{
-        let {name,img,price,description} = req.body;
-        await Product.create({name,img,price,description})
+        let {name,img,price,description, quantity} = req.body;
+        await Product.create({name,img,price,description,quantity, author:req.user._id}) // here author is not coming from req body; it is coming from login(user)
         req.flash('success','Product added successfully')
         res.redirect('/products')
     }
@@ -42,7 +42,7 @@ router.post('/products', validateProduct, isLoggedIn, async(req,res)=>{
 })
 
 // to show a particular product
-router.get('/products/:id', async(req,res)=>{
+router.get('/products/:id', isLoggedIn, async(req,res)=>{
     try{
         let {id} = req.params
         let foundProduct = await Product.findById(id).populate('reviews') // populate with reviews when we are showing a particular product
@@ -70,8 +70,8 @@ router.get('/products/:id/edit', isLoggedIn, async(req,res)=>{
 router.patch('/products/:id',validateProduct, isLoggedIn, async(req,res)=>{
     try{
         let {id} = req.params
-        let {name,img,price,description} = req.body;
-        await Product.findByIdAndUpdate(id, {name,img,price,description})
+        let {name,img,price,description,quantity} = req.body;
+        await Product.findByIdAndUpdate(id, {name,img,price,description,quantity})
         req.flash('success','Product edited successfully')
         res.redirect(`/products/${id}`)
     }
@@ -81,7 +81,7 @@ router.patch('/products/:id',validateProduct, isLoggedIn, async(req,res)=>{
 })
 
 // to delete a product with reviews
-router.delete('/products/:id', isLoggedIn, async(req,res)=>{
+router.delete('/products/:id', isLoggedIn, isProductAuthor, async(req,res)=>{
     try{
         let {id} = req.params
         const product = await Product.findById(id)

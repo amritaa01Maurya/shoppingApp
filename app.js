@@ -1,3 +1,7 @@
+if(process.env.NODE_ENV !== 'production'){
+    require('dotenv').config();
+}
+
 
 const express = require('express')
 const app = express() // we can not exports the app because they the instances of the application
@@ -14,14 +18,23 @@ const passport = require('passport')
 const LocalStrategy = require('passport-local')
 // require the userschema from model
 const User = require('./models/User')
+const MongoStore = require('connect-mongo');
 
+
+// const dbURL = process.env.dbURL || 'mongodb://localhost:27017/shopping-sam-app-2';
+const dbURL = process.env.dbURL;
 
 // routes
 const productRoutes = require('./routes/product')
 const reviewRoutes = require('./routes/review')
 const authRoutes = require('./routes/auth')
+const cartRoutes = require('./routes/cart')
+const productApi = require('./routes/api/productapi')
 
-
+mongoose.set('strictQuery', true);
+// mongoose.connect(dbURL)
+//     .then(() => console.log('DB Connected'))
+//     .catch((err) => console.log(err));
 
 mongoose.connect('mongodb://127.0.0.1:27017/shopping-app')
     .then(() => {
@@ -31,6 +44,15 @@ mongoose.connect('mongodb://127.0.0.1:27017/shopping-app')
         console.log("DB disconnected");
         console.log(err);
     });
+
+
+let secret = process.env.SECRET || 'weneedabettersecretkey';
+
+let store = MongoStore.create({
+    secret:secret,
+    mongoUrl: dbURL,
+    touchAfter:24*60*60
+})
 
 // for session
 let configSession = {
@@ -83,10 +105,15 @@ passport.use(new LocalStrategy(User.authenticate()));
 // how to delete the db
 //  db.products.deleteMany({})
 
+app.get('/', (req,res)=>{
+    res.render('home')
+})
 
-app.use(productRoutes)//so that har incoming request ke liye path chack kiya jaye
-app.use(reviewRoutes)//so that har incoming request ke liye path chack kiya jaye
-app.use(authRoutes)//so that har incoming request ke liye path chack kiya jaye
+app.use(productRoutes)//so that har incoming request ke liye path check kiya jaye
+app.use(reviewRoutes)//so that har incoming request ke liye path check kiya jaye
+app.use(authRoutes)//so that har incoming request ke liye path check kiya jaye
+app.use(cartRoutes)
+app.use(productApi)
 
 
 app.listen(8080, () => {

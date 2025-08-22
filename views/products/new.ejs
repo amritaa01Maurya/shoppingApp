@@ -1,7 +1,7 @@
 
 <% layout('layouts/boilerplate') %>
 
-<%- include('../partials/navbar') %>
+<!-- <%- include('../partials/navbar') %> -->
 
 <div class="row">
     <div class="col-6 mx-auto"> 
@@ -49,6 +49,16 @@
                 </div>
                 <div class="invalid-feedback">
                         Please enter the product details.
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="quantity">Quantity:</label>
+                <input type="number" class="form-control" name="quantity" id="quantity" placeholder="" required>
+                <div class="valid-feedback">
+                        Looks good!
+                </div>
+                <div class="invalid-feedback">
+                        Please enter the product quantity.
                 </div>
             </div>
             <button class="btn btn-sm btn-success">Add product</button>

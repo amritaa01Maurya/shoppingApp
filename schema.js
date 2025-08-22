@@ -6,6 +6,7 @@ const productSchema = Joi.object({
     name: Joi.string().required(),
     img: Joi.string().required(),
     price: Joi.string().min(0).required(),
+    quantity: Joi.string().min(0).required(),
     description: Joi.string().required()
 
 })
