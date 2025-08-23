@@ -8,7 +8,7 @@ const products = [
     name: "Wireless Bluetooth Earbuds",
     img: "https://images.unsplash.com/photo-1655804439989-24758d6e96b8?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fHdpcmVsZXNzJTIwYnVkc3xlbnwwfHwwfHx8MA%3D%3D",
     price: 2999,
-    description: "Compact wireless earbuds with high-quality sound and noise cancellation."
+    description: "Compact wireless earbuds with high-quality sound and noise cancellation.",
   },
   {
     name: "Stainless Steel Water Bottle",

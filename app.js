@@ -18,7 +18,7 @@ const passport = require('passport')
 const LocalStrategy = require('passport-local')
 // require the userschema from model
 const User = require('./models/User')
-// const MongoStore = require('connect-mongo');
+const MongoStore = require('connect-mongo');
 
 
 // const dbURL = process.env.dbURL || 'mongodb://127.0.0.1:27017/shopping-app';

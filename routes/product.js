@@ -19,7 +19,7 @@ router.get('/products', async(req,res)=>{
 })
 
 // to show the form of the new products
-router.get('/product/new',isLoggedIn, (req,res)=>{
+router.get('/products/new',isLoggedIn, (req,res)=>{
     try{
         res.render('products/new')
     }
@@ -54,7 +54,7 @@ router.get('/products/:id', isLoggedIn, async(req,res)=>{
 })
 
 // form to edit the product data
-router.get('/products/:id/edit', isLoggedIn, async(req,res)=>{
+router.get('/products/:id/edit', isLoggedIn,isProductAuthor, async(req,res)=>{
     try{
 
         let {id} = req.params
@@ -67,7 +67,7 @@ router.get('/products/:id/edit', isLoggedIn, async(req,res)=>{
 })
 
 // to actually edit the data in db
-router.patch('/products/:id',validateProduct, isLoggedIn, async(req,res)=>{
+router.patch('/products/:id',validateProduct, isLoggedIn,isProductAuthor, async(req,res)=>{
     try{
         let {id} = req.params
         let {name,img,price,description,quantity} = req.body;

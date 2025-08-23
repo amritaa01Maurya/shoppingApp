@@ -47,7 +47,7 @@ const isProductAuthor = async(req,res,next)=>{
     const {id} = req.params;  // to get product id
     let product = await Product.findById(id) // entire product // if we are working with db then there will be wait to it will be asyns await
     // when u compare 2 obj ids then u use method equals not ===
-    if(!product.author.equals(req.user._id)){
+    if(!product.author || !product.author.equals(req.user._id)){
         req.flash('error','You are not the authorised user !')
         return res.redirect('/products')
     }
