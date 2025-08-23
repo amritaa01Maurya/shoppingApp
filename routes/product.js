@@ -19,9 +19,9 @@ router.get('/products', async(req,res)=>{
 })
 
 // to show the form of the new products
-router.get('/products/new',isLoggedIn, (req,res)=>{
+router.get('/product/new',isLoggedIn, (req,res)=>{
     try{
-        res.render('products/new')
+        res.render('product/new')
     }
     catch(e){
         res.status(404).render('error',{err: e.message})
