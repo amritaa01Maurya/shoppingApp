@@ -18,10 +18,10 @@ const passport = require('passport')
 const LocalStrategy = require('passport-local')
 // require the userschema from model
 const User = require('./models/User')
-const MongoStore = require('connect-mongo');
+// const MongoStore = require('connect-mongo');
 
 
-// const dbURL = process.env.dbURL || 'mongodb://localhost:27017/shopping-sam-app-2';
+// const dbURL = process.env.dbURL || 'mongodb://127.0.0.1:27017/shopping-app';
 const dbURL = process.env.dbURL;
 
 // routes
@@ -32,27 +32,28 @@ const cartRoutes = require('./routes/cart')
 const productApi = require('./routes/api/productapi')
 
 mongoose.set('strictQuery', true);
-// mongoose.connect(dbURL)
-//     .then(() => console.log('DB Connected'))
-//     .catch((err) => console.log(err));
-
-mongoose.connect('mongodb://127.0.0.1:27017/shopping-app')
-    .then(() => {
-        console.log("DB connected successfully");
-    })
-    .catch((err) => {
-        console.log("DB disconnected");
-        console.log(err);
-    });
+mongoose.connect(dbURL)
+    .then(() => console.log('DB Connected'))
+    .catch((err) => console.log(err));
 
 
-let secret = process.env.SECRET || 'weneedabettersecretkey';
+// mongoose.connect('mongodb://127.0.0.1:27017/shopping-app')
+//     .then(() => {
+//         console.log("DB connected successfully");
+//     })
+//     .catch((err) => {
+//         console.log("DB disconnected");
+//         console.log(err);
+//     });
 
-let store = MongoStore.create({
-    secret:secret,
-    mongoUrl: dbURL,
-    touchAfter:24*60*60
-})
+
+// let secret = process.env.SECRET || 'weneedabettersecretkey';
+
+// let store = MongoStore.create({
+//     secret:secret,
+//     mongoUrl: dbURL,
+//     touchAfter:24*60*60
+// })
 
 // for session
 let configSession = {
