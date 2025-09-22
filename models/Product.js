@@ -5,7 +5,7 @@ const { required } = require("joi");
 const productSchema= new mongoose.Schema({
     name: {
         type:String,
-        trim:true,
+      trim:true,
         required: true
     },
     img: {

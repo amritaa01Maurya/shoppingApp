@@ -18,7 +18,8 @@ const passport = require('passport')
 const LocalStrategy = require('passport-local')
 // require the userschema from model
 const User = require('./models/User')
-const MongoStore = require('connect-mongo');
+
+// const MongoStore = require('connect-mongo');
 
 
 // const dbURL = process.env.dbURL || 'mongodb://127.0.0.1:27017/shopping-app';
@@ -69,8 +70,11 @@ let configSession = {
    }
 }
 
-
-app.engine('ejs', ejsMate)
+// EJS-Mate is a layout and partials manager for EJS (Embedded JavaScript), 
+// a popular templating engine used in web development. 
+// It simplifies the process of creating reusable layouts and components, 
+// making your code cleaner and more maintainable.
+app.engine('ejs', ejsMate) // template
 app.set('view engine', 'ejs')// sirf ejs ki file dekh
 app.set('views', path.join(__dirname, 'views'))// views folder
 app.use(express.static(path.join(__dirname, 'public'))) // public folder
